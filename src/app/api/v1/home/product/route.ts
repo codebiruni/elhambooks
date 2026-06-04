@@ -33,10 +33,7 @@ export async function GET(request: NextRequest) {
         products,
       },
       { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=28800', 
-        }
+        status: 200
       }
     );
   } catch (err: any) {

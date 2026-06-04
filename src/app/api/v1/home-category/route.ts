@@ -17,10 +17,7 @@ export async function GET() {
         data: categories,
       },
       { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=28800', 
-        }
+        status: 200
       }
     );
   } catch (err: any) {

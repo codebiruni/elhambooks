@@ -127,10 +127,7 @@ export async function GET(request: NextRequest) {
     };
 
     return NextResponse.json(response, { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=100800', 
-        }
+        status: 200
       });
 
   } catch (error: any) {

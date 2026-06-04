@@ -52,10 +52,7 @@ export async function GET(request: NextRequest) {
         navItems,
       },
       { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=100800', 
-        }
+        status: 200
       }
     );
   } catch (err: any) {

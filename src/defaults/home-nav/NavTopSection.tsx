@@ -19,15 +19,8 @@ export default function NavTopSection() {
       <div className="container mx-auto flex items-center justify-between px-4">
         {/* Logo */}
         <Link href="/" className="text-2xl font-bold text-primary">
-          <Image
-            src={`/logo.png`}
-            alt="logo"
-            width={120}
-            height={50}
-            className="h-10 drop-shadow-md w-auto"
-          />
+          ইলহাম বুকস
         </Link>
-
         {/* Search Bar */}
         <div className="hidden md:block">
           <SearchBar />

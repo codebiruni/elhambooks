@@ -61,7 +61,7 @@ export default function HomeOffersProducts() {
   );
 
   return (
-    <section className="w-full ">
+    <section className="w-full mt-20">
       <div
         className="container mx-auto rounded-2xl p-6 
     bg-gradient-to-r from-pink-50 via-purple-50 to-blue-50 

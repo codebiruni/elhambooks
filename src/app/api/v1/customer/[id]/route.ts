@@ -28,10 +28,7 @@ export async function GET(request: NextRequest, context: ParamsType) {
       );
     }
     return NextResponse.json({ success: true, data: customer }, { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=10800', 
-        }
+        status: 200
       });
   } catch (err) {
     console.error("GET customer error:", err);

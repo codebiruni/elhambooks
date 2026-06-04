@@ -15,13 +15,18 @@ import { NavUser } from "./nav-user";
 import { data } from "@/app/data/nav-data";
 import useContextData from "@/defaults/custom-component/useContextData";
 import { usePathname, useRouter } from "next/navigation";
+// Import a loader icon if you want, or use text
+import { Loader2 } from "lucide-react";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { UserData } = useContextData();
+  // 1. Pull your session loading state from context
+  const { UserData, loading } = useContextData();
   const router = useRouter();
   const pathname = usePathname();
 
   React.useEffect(() => {
+    if (loading) return;
+
     if (!UserData) {
       router.push("/");
       return;
@@ -30,17 +35,26 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const role = UserData.role;
 
     if (role === "user") {
-      // allow: /profile, /profile/anything
       if (!pathname.startsWith("/profile")) {
         router.push("/profile");
       }
     } else {
-      // allow: /dashboard, /dashboard/anything
       if (!pathname.startsWith("/dashboard")) {
         router.push("/dashboard");
       }
     }
-  }, [UserData, pathname, router]);
+  }, [UserData, loading, pathname, router]); // Add loading to dependencies
+
+  // 4. Optional: Render a loading state so the screen doesn't flicker or break layout
+  if (loading) {
+    return (
+      <Sidebar collapsible="icon" {...props}>
+        <div className="flex h-full w-full items-center justify-center bg-sidebar">
+          <Loader2 className="h-6 w-6 animate-spin text-sidebar-foreground/50" />
+        </div>
+      </Sidebar>
+    );
+  }
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -52,7 +66,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

@@ -244,9 +244,6 @@ export default function ShippingForm({
               </p>
               {formData.district && (
                 <div className="space-y-1">
-                  <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">
-                    🚚 ১০০০ BDT এর উপর অর্ডারে ফ্রি ডেলিভারি!
-                  </p>
                   <p className="text-xs text-green-600 dark:text-green-400 font-medium">
                     ⚡ ১ ঘন্টার মধ্যে ফোনে কনফার্মেশন
                   </p>

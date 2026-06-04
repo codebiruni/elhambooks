@@ -12,6 +12,8 @@ export async function POST(request: NextRequest) {
     await connectDb();
     await auth(USER_ROLE.SUPER_ADMIN, USER_ROLE.ADMIN);
 
+    console.log(USER_ROLE,"user will be there");
+
     const createdProduct = await Product.create(payload);
 
     return NextResponse.json(
@@ -77,10 +79,7 @@ export async function GET(request: NextRequest) {
         },
       },
       { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=10800', 
-        }
+        status: 200
       }
     );
   } catch (err: any) {

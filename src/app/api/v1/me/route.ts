@@ -13,10 +13,7 @@ export async function GET() {
 
     const decoded = jwtDecode(token);
     return NextResponse.json({ user: decoded }, { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=10800', 
-        }
+        status: 200
       });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {

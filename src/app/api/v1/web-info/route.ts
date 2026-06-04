@@ -52,10 +52,7 @@ export async function GET() {
     return NextResponse.json(
       { success: true, data: siteInfo },
       { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=28800', 
-        }
+        status: 200
       }
     );
   } catch (err: any) {

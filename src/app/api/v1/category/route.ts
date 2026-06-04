@@ -5,13 +5,16 @@ import connectDb from "@/lib/connectdb";
 import Category from "@/models/category.model";
 import { NextRequest, NextResponse } from "next/server";
 
+// Force Next.js to treat this API route as purely dynamic
+export const dynamic = "force-dynamic";
+
 // Create Category
 export async function POST(request: NextRequest) {
   try {
-    const category = await request.json();
     await connectDb();
-    await auth(USER_ROLE.SUPER_ADMIN);
+    await auth(USER_ROLE.SUPER_ADMIN); // 1. Shield the route immediately
 
+    const category = await request.json(); // 2. Parse payload safely
     const createdCategory = await Category.create(category);
 
     return NextResponse.json(
@@ -36,6 +39,7 @@ export async function GET(request: NextRequest) {
   try {
     await connectDb();
     await auth(USER_ROLE.SUPER_ADMIN, USER_ROLE.ADMIN, USER_ROLE.MENAGER);
+
     const { searchParams } = new URL(request.url);
     const search = searchParams.get("search") || "";
     const page = Number(searchParams.get("page") || 1);
@@ -51,7 +55,6 @@ export async function GET(request: NextRequest) {
       .skip((page - 1) * limit)
       .limit(limit)
       .sort({ createdAt: -1 });
-
     return NextResponse.json(
       {
         success: true,
@@ -63,12 +66,7 @@ export async function GET(request: NextRequest) {
           totalPages: Math.ceil(total / limit),
         },
       },
-      { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=10800', 
-        }
-      }
+      { status: 200 }
     );
   } catch (err: any) {
     console.error("GET Category error:", err);
@@ -82,12 +80,11 @@ export async function GET(request: NextRequest) {
 // Update Category
 export async function PATCH(request: NextRequest) {
   try {
-    const { id, ...updateData } = await request.json();
-
-    if (!id) throw new Error("Category ID is required");
-
     await connectDb();
     await auth(USER_ROLE.SUPER_ADMIN);
+
+    const { id, ...updateData } = await request.json();
+    if (!id) throw new Error("Category ID is required");
 
     const updatedCategory = await Category.findByIdAndUpdate(id, updateData, {
       new: true,
@@ -117,12 +114,11 @@ export async function PATCH(request: NextRequest) {
 // Soft Delete / Restore Category
 export async function DELETE(request: NextRequest) {
   try {
-    const { id } = await request.json();
-
-    if (!id) throw new Error("Category ID is required");
-
     await connectDb();
     await auth(USER_ROLE.SUPER_ADMIN);
+
+    const { id } = await request.json();
+    if (!id) throw new Error("Category ID is required");
 
     const category = await Category.findById(id);
     if (!category) {

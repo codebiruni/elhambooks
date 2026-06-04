@@ -165,10 +165,7 @@ async function getLowStockProducts(request: NextRequest) {
   };
 
   return NextResponse.json(response, { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=10800', 
-        }
+        status: 200
       });
 }
 
@@ -264,10 +261,7 @@ async function getLowStockStatistics() {
       }
     },
     { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=10800', 
-        }
+        status: 200
       }
   );
 }
@@ -309,10 +303,7 @@ async function getCriticalStock(request: NextRequest) {
       message: `Found ${transformedProducts.length} critically low stock products`
     },
     { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=10800', 
-        }
+        status: 200
       }
   );
 }
@@ -360,10 +351,7 @@ export async function POST(request: NextRequest) {
         }
       },
       { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=10800', 
-        }
+        status: 200
       }
     );
 

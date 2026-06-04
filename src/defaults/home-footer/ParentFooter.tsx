@@ -21,52 +21,6 @@ import {
 export default function ParentFooter() {
   return (
     <footer className="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
-      {/* Promo Card */}
-      <div className="container mx-auto px-4 py-8">
-        <Card className="relative mt-4 overflow-hidden border-0 bg-gradient-to-br from-purple-600/10 to-blue-600/5 dark:from-purple-600/20 dark:to-blue-600/10">
-          {/* Decorative elements */}
-          <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-600/10 dark:bg-purple-600/20"></div>
-          <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-blue-600/5 dark:bg-blue-600/10"></div>
-
-          {/* Content */}
-          <CardContent className="relative z-10 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="space-y-3">
-              <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
-                Stay Updated with Our Latest Offers!
-              </h3>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                <p className="text-muted-foreground">
-                  Subscribe to our newsletter and get 15% off your first order
-                  plus exclusive deals.
-                </p>
-                <div className="h-1 w-8 rounded-full bg-purple-600/30"></div>
-                <div className="flex gap-2">
-                  <span className="inline-flex items-center rounded-full bg-purple-600/10 px-3 py-1 text-xs font-medium text-purple-600 dark:bg-purple-600/20 dark:text-purple-400">
-                    Exclusive Deals
-                  </span>
-                  <span className="inline-flex items-center rounded-full bg-blue-600/10 px-3 py-1 text-xs font-medium text-blue-600 dark:bg-blue-600/20 dark:text-blue-400">
-                    Limited Time
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="flex w-full max-w-sm items-center space-x-2">
-              <Input
-                type="email"
-                placeholder="Your email address"
-                className="bg-background focus-visible:ring-purple-300"
-              />
-              <Button
-                type="submit"
-                className="bg-purple-600 hover:bg-purple-700 text-white font-medium"
-              >
-                Subscribe
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -82,7 +36,9 @@ export default function ParentFooter() {
             </p>
             <div className="flex space-x-4">
               <Button variant="ghost" size="icon" className="rounded-full">
-                <Facebook className="h-5 w-5" />
+                <a href="https://www.facebook.com/profile.php?id=61589566599337" target="_blank">
+                  <Facebook className="h-5 w-5" />
+                </a>
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full">
                 <Twitter className="h-5 w-5" />
@@ -92,9 +48,6 @@ export default function ParentFooter() {
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full">
                 <Linkedin className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <Youtube className="h-5 w-5" />
               </Button>
             </div>
           </div>
@@ -108,31 +61,7 @@ export default function ParentFooter() {
                   href="#"
                   className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
                 >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
-                >
                   Shop
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
-                >
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
-                >
-                  Blog
                 </a>
               </li>
               <li>
@@ -163,14 +92,6 @@ export default function ParentFooter() {
                   href="#"
                   className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
                 >
-                  My Account
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
-                >
                   Order Tracking
                 </a>
               </li>
@@ -179,23 +100,7 @@ export default function ParentFooter() {
                   href="#"
                   className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
                 >
-                  Wishlist
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
-                >
                   Returns & Exchanges
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
-                >
-                  Shipping Info
                 </a>
               </li>
               <li>
@@ -216,19 +121,13 @@ export default function ParentFooter() {
               <li className="flex items-start gap-2">
                 <MapPin className="w-5 h-5 mt-0.5 text-gray-600 dark:text-gray-400" />
                 <span className="text-gray-600 dark:text-gray-400">
-                  123 Street, City, Country
+                  Bangladesh,Dhaka , Dhaka, Bangladesh
                 </span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                 <span className="text-gray-600 dark:text-gray-400">
-                  +1 234 567 890
-                </span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Mail className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                <span className="text-gray-600 dark:text-gray-400">
-                  support@example.com
+                  +8801639-802756
                 </span>
               </li>
             </ul>
@@ -244,7 +143,7 @@ export default function ParentFooter() {
             <div>
               <h4 className="font-medium">Free Shipping</h4>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                On orders over $100
+                On offers products
               </p>
             </div>
           </div>
@@ -282,8 +181,7 @@ export default function ParentFooter() {
         {/* Copyright */}
         <div className="flex flex-col md:flex-row justify-between items-center py-4">
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            © {new Date().getFullYear()} Your E-commerce Store. All rights
-            reserved.
+            © {new Date().getFullYear()} Elhambooks. All rights reserved.
           </p>
           <div className="flex gap-4 mt-4 md:mt-0">
             <a

@@ -48,14 +48,11 @@ export async function GET(request: NextRequest) {
         },
       },
       { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=10800', 
-        }
+        status: 200
       }
     );
   } catch (err: any) {
-    console.error("❌ GET SubCategory error:", err);
+    console.error("GET SubCategory error:", err);
     return NextResponse.json(
       {
         success: false,

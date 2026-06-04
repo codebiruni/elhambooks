@@ -9,11 +9,11 @@ export default function Home() {
   return (
     <div className="w-full top-padding">
       <HomeBanner />
-      <OffetsCards />
+      {/* <OffetsCards /> */}
       <HomeCategory />
       <Products />
-      <HomeOffersProducts />
-      <CouponProducts />
+      {/* <HomeOffersProducts /> */}
+      {/* <CouponProducts /> */}
     </div>
   );
 }

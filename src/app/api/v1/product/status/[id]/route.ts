@@ -29,10 +29,7 @@ export async function GET(req: NextRequest, context: ParamsType) {
     }
 
     return NextResponse.json({ success: true, data: product }, { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=10800', 
-        }
+        status: 200
       });
   } catch (error: any) {
     return NextResponse.json(

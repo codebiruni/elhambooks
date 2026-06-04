@@ -81,26 +81,6 @@ const ProductForm = () => {
   });
 
   // Load data from localStorage on mount
-  useEffect(() => {
-    const savedData = localStorage.getItem("productFormData");
-    if (savedData) {
-      try {
-        const parsedData = JSON.parse(savedData);
-        form.reset(parsedData);
-      } catch (error) {
-        console.error("Failed to parse saved form data:", error);
-      }
-    }
-  }, [form]);
-
-  // Save data to localStorage on form changes
-  useEffect(() => {
-    const subscription = form.watch((value) => {
-      localStorage.setItem("productFormData", JSON.stringify(value));
-    });
-    return () => subscription.unsubscribe();
-  }, [form]);
-
   const onSubmit = async (data: ProductFormData) => {
     setIsSubmitting(true);
     try {
@@ -119,19 +99,35 @@ const ProductForm = () => {
         },
         credentials: "include",
         body: JSON.stringify(formattedData),
-        
       });
 
+      // -------- DETAILED SERVER ERROR CAPTURE --------
       if (!res.ok) {
-        throw new Error("Failed to create product");
+        let serverError = "Failed to create product";
+        try {
+          // Try parsing as JSON first (common for validation frameworks like Zod/Mongoose)
+          const errorData = await res.json();
+          console.error("SERVER ERROR DETAILS (JSON):", errorData);
+          serverError = errorData.message || errorData.error || JSON.stringify(errorData);
+        } catch {
+          // Fallback if the server returned a plain text error instead of JSON
+          const errorText = await res.text().catch(() => "");
+          console.error("SERVER ERROR DETAILS (TEXT):", errorText);
+          if (errorText) serverError = errorText;
+        }
+
+        throw new Error(serverError);
       }
+      // ------------------------------------------------
 
       toast.success("Product created successfully!");
-      form.reset();
+      // form.reset();
       localStorage.removeItem("productFormData");
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      toast.error("Failed to create product");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error("Caught error in form submission:", error);
+      // This will now print the actual server message inside your toast notice!
+      toast.error(error.message || "Failed to create product");
     } finally {
       setIsSubmitting(false);
     }

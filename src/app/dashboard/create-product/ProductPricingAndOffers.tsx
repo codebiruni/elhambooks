@@ -116,7 +116,7 @@ const ProductPricingAndOffers = ({ form }: ProductPricingAndOffersProps) => {
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Price Variants */}
-        <div>
+        {/* <div>
           <div className="flex justify-between items-center mb-2">
             <Label>Price Variants</Label>
             <Button
@@ -213,11 +213,11 @@ const ProductPricingAndOffers = ({ form }: ProductPricingAndOffersProps) => {
               {errors.priceVariants.message}
             </p>
           )}
-        </div>
+        </div> */}
 
         {/* General Price */}
         <div>
-          <Label htmlFor="quentity">Quentity</Label>
+          <Label htmlFor="quentity">Quantity Available(Stock)</Label>
           <Input
             type="number"
             id="quentity"
@@ -230,7 +230,6 @@ const ProductPricingAndOffers = ({ form }: ProductPricingAndOffersProps) => {
         </div>
 
         <div>
-          <Label>General Pricing</Label>
           <div className="grid grid-cols-3 gap-4 mt-2">
             <div>
               <Label htmlFor="generalPrice.currentPrice">Current Price</Label>

@@ -2,6 +2,7 @@
 import connectDb from "@/lib/connectdb";
 import Product from "@/models/product.model";
 import { NextRequest, NextResponse } from "next/server";
+import mongoose from "mongoose"; // 1. IMPORT MONGOOSE
 
 type ParamsType = {
   params: Promise<{
@@ -11,6 +12,14 @@ type ParamsType = {
 
 export async function GET(request: NextRequest, context: ParamsType) {
   const { id } = await context.params;
+
+  // 2. VALIDATE THE ID FORMAT BEFORE QUERYING
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return NextResponse.json(
+      { status: "error", message: "Invalid Subcategory ID format" },
+      { status: 400 }
+    );
+  }
 
   try {
     await connectDb();
@@ -23,8 +32,11 @@ export async function GET(request: NextRequest, context: ParamsType) {
     // Calculate skip value for pagination
     const skip = (page - 1) * limit;
 
-    // Build base query - only get products from this category that aren't deleted
-    const searchQuery: any = { isDeleted: false, subCategory: id };
+    // 3. EXPLICITLY CAST THE STRING TO A MONGO OBJECTID
+    const searchQuery: any = {
+      isDeleted: false,
+      subCategory: new mongoose.Types.ObjectId(id)
+    };
 
     // Get total count for pagination info
     const totalCount = await Product.countDocuments(searchQuery);
@@ -32,8 +44,7 @@ export async function GET(request: NextRequest, context: ParamsType) {
     const hasNextPage = page < totalPages;
     const hasPrevPage = page > 1;
 
-    // For better performance with random sorting, we'll use a computed random field
-    // instead of $sample which is inefficient for large collections
+    // Aggregation pipeline will now find matches perfectly!
     const products = await Product.aggregate([
       { $match: searchQuery },
       {

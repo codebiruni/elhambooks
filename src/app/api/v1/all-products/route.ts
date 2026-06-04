@@ -115,9 +115,6 @@ export async function GET(request: NextRequest) {
       },
       { 
         status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=10800', 
-        }
       }
     );
   } catch (err: any) {

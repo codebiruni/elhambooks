@@ -34,6 +34,7 @@ interface PaginationInfo {
 export default function CategoryProduct() {
   const params = useParams();
   const id = params.categoryId as string;
+  console.log(id, "id");
 
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -132,7 +133,7 @@ export default function CategoryProduct() {
           <div className="col-span-full text-center py-12">
             <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <p className="text-gray-500 text-lg">
-              No products found in this category
+              No products found in this category hello
             </p>
             <Link href="/products">
               <Button variant="outline" className="mt-4">

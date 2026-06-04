@@ -226,7 +226,11 @@ export default function PurchaseProducts() {
         body: JSON.stringify(orderData),
       })
 
-      if (!response.ok) throw new Error('Failed to create order')
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        console.error("SERVER VALIDATION ERROR DETAILS:", errorData);
+        throw new Error(errorData?.message || 'Failed to create order');
+      }
 
       const result = await response.json()
 

@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
     const page = Number(searchParams.get("page") || 1);
     const limit = Number(searchParams.get("limit") || 20);
 
+
     const query: any = {};
     if (search) {
       query.name = { $regex: search, $options: "i" };
@@ -38,10 +39,7 @@ export async function GET(request: NextRequest) {
         },
       },
       { 
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, max-age=10800', 
-        }
+        status: 200
       }
     );
   } catch (err: any) {

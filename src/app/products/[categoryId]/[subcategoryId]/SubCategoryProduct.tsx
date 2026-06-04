@@ -58,6 +58,7 @@ export default function SubCategoryProduct() {
           }
         );
         const data = await res.json();
+        console.log(data);
         if (data.status === "success") {
           setProducts(data.products);
           setPagination(data.pagination);

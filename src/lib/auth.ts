@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import UserModel from "@/models/user.model";
 
+
 export const auth = async (...requiredRoles: TUserRole[]) => {
   const cookieStore = await cookies();
   const tokenCookie = cookieStore.get("accessToken");
