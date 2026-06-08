@@ -95,7 +95,7 @@ export default function PurchaseProducts() {
     sum + (item.price * item.quantity), 0)
   
   const deliveryCharge = formData.district ? 
-    (/dhaka|ঢাকা/i.test(formData.district) ? 80 : 120) : 0
+    (/dhaka|ঢাকা/i.test(formData.district) ? 70 : 90) : 0
   const discount = 0
   const grandTotal = subtotal + deliveryCharge - discount
 
