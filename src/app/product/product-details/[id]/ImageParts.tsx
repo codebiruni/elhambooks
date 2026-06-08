@@ -53,6 +53,7 @@ export default function ImageParts({ images }: ImagePartsProps) {
               fill
               className="object-cover"
               sizes="150px"
+              priority
             />
           </div>
         ))}
@@ -69,6 +70,7 @@ export default function ImageParts({ images }: ImagePartsProps) {
               className="object-contain cursor-zoom-in"
               sizes="(max-width: 768px) 100vw, 50vw"
               onClick={handleZoomClick}
+              priority
             />
 
             {/* Zoom button */}
@@ -119,6 +121,7 @@ export default function ImageParts({ images }: ImagePartsProps) {
               fill
               className="object-contain"
               sizes="80vh"
+              priority
             />
           </div>
         </DialogContent>
