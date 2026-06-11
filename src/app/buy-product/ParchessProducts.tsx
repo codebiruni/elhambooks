@@ -13,11 +13,9 @@ import ShippingForm from './ShippingForm'
 interface OrderFormData {
   name: string
   number: string
-  division: string
   district: string
   upazilla: string
-  union: string
-  houseAddress: string
+  union: string // This field represents Village / Ward / Area Address
   note: string
   paymentMethod: 'cash-on-delivery'
 }
@@ -54,11 +52,9 @@ export default function PurchaseProducts() {
   const [formData, setFormData] = useState<OrderFormData>({
     name: '',
     number: '',
-    division: '',
     district: '',
     upazilla: '',
-    union: '',
-    houseAddress: '',
+    union: '', // Used for Village / Ward / Area Address
     note: '',
     paymentMethod: 'cash-on-delivery'
   })
@@ -166,16 +162,13 @@ export default function PurchaseProducts() {
     }
   }
 
-  // Rest of your handleSubmitOrder function remains the same...
   const handleSubmitOrder = async () => {
     const requiredFields = [
       { field: 'name', label: 'Full Name' },
       { field: 'number', label: 'Phone Number' },
-      { field: 'houseAddress', label: 'House Address' },
-      { field: 'division', label: 'Division' },
       { field: 'district', label: 'District' },
-      { field: 'upazilla', label: 'Upazilla' },
-      { field: 'union', label: 'Union' }
+      { field: 'upazilla', label: 'Thana / Upazila' },
+      { field: 'union', label: 'Village / Ward Address' }
     ]
 
     const missingField = requiredFields.find(field => !formData[field.field as keyof OrderFormData])
@@ -205,10 +198,11 @@ export default function PurchaseProducts() {
         }
       })
 
+      // Clean address aggregation using only your updated variables
       const orderData = {
         name: formData.name,
         number: formData.number,
-        address: `${formData.houseAddress}, ${formData.union}, ${formData.upazilla}, ${formData.district}, ${formData.division}`,
+        address: `${formData.union}, ${formData.upazilla}, ${formData.district}`,
         products: productsWithQuantity,
         totalAmount: subtotal,
         deliveryCharge,
@@ -246,11 +240,9 @@ export default function PurchaseProducts() {
       setFormData({
         name: '',
         number: '',
-        division: '',
         district: '',
         upazilla: '',
         union: '',
-        houseAddress: '',
         note: '',
         paymentMethod: 'cash-on-delivery'
       })
@@ -294,9 +286,7 @@ export default function PurchaseProducts() {
           isFormValid={
             !!formData.name && 
             !!formData.number && 
-            !!formData.houseAddress && 
             !!formData.union && 
-            !!formData.division && 
             !!formData.district && 
             !!formData.upazilla
           }

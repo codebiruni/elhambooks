@@ -66,18 +66,10 @@ export default function ParentFooter() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/contact-us"
                   className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
                 >
                   Contact
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
-                >
-                  FAQs
                 </a>
               </li>
             </ul>
@@ -89,15 +81,7 @@ export default function ParentFooter() {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="#"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
-                >
-                  Order Tracking
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
+                  href="/return-policy"
                   className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
                 >
                   Returns & Exchanges
@@ -105,7 +89,7 @@ export default function ParentFooter() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/privacy-policy"
                   className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
                 >
                   Privacy Policy

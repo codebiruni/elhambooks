@@ -45,8 +45,10 @@ export function TeamSwitcher({
                 <Image src='/logo.png' alt="store logo" width={120} height={120} />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">Online Store</span>
-                <span className="truncate text-xs">Make you buissness to the world</span>
+                <span className="truncate font-medium">Elham Books</span>
+                <span className="truncate text-xs">
+                  Your Destination for Islamic Books
+                </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>

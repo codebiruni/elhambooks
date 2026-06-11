@@ -160,7 +160,7 @@ export const EmailTemplates = {
   sendWelcomeEmail: async (to: string, userName: string) => {
     return sendEmail({
       to,
-      subject: "Welcome to Online Store",
+      subject: "Welcome to Elham Books",
       template: "welcome",
       templateData: {
         userName,
