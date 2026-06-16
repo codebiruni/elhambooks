@@ -228,6 +228,20 @@ export default function PurchaseProducts() {
 
       const result = await response.json()
 
+      // 👇 ADD META PIXEL PURCHASE EVENT HERE 👇
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        (window as any).fbq('track', 'Purchase', {
+          value: grandTotal,           // Total order value (Subtotal + Shipping)
+          currency: 'BDT',             // Sets currency to Bangladeshi Taka
+          content_type: 'product',
+          contents: itemsWithQuantity.map(item => ({
+            id: item.id,               // Product ID
+            quantity: item.quantity    // Product Quantity
+          }))
+        });
+      }
+      // 👆 END OF META PIXEL CODE 👆
+
       const orderedProductIds = itemsWithQuantity.map(item => item.id)
       removeProductsFromStorage(orderedProductIds)
       
