@@ -56,65 +56,45 @@ export default function ShippingForm({
   }
 
   return (
-    <div style={{ backgroundColor: '#eef0f5', minHeight: '100vh', padding: '24px 16px', fontFamily: 'inherit' }}>
+    <div className="min-h-screen bg-[#eef0f5] dark:bg-background px-4 py-6 font-inherit text-foreground transition-colors duration-200">
 
       {/* Page Heading */}
-      <h2 style={{ color: '#1a8a3c', fontSize: '20px', fontWeight: '700', marginBottom: '24px', lineHeight: '1.4' }}>
+      <h2 className="text-[20px] font-bold text-[#1a8a3c] dark:text-[#22c55e] mb-6 leading-relaxed">
         আপনার ডেলিভারি ঠিকানা দিন
       </h2>
 
       {/* Full Name */}
-      <div style={{ marginBottom: '16px' }}>
-        <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#1a1a1a' }}>
-          আপনার নামঃ <span style={{ color: '#e53e3e' }}>*</span>
+      <div className="mb-4">
+        <label className="block mb-1.5 text-sm font-medium text-foreground">
+          আপনার নামঃ <span className="text-[#e53e3e]">*</span>
         </label>
         <Input
           value={formData.name}
           onChange={(e) => onInputChange('name', e.target.value)}
           placeholder="আপনার পূর্ণ নাম লিখুন"
           required
-          style={{
-            width: '100%',
-            backgroundColor: '#ffffff',
-            border: '1px solid #d0d3dc',
-            borderRadius: '6px',
-            height: '48px',
-            fontSize: '15px',
-            padding: '0 12px',
-            boxShadow: 'none',
-          }}
-          className="focus:ring-0 focus:border-gray-400"
+          className="w-full h-12 px-3 text-[15px] rounded-md border border-border bg-card text-foreground placeholder:text-muted-foreground/60 shadow-none focus:ring-0 focus:border-muted-foreground transition-colors"
         />
       </div>
 
-      {/* Address — maps to `union` (Village / Ward / Area Address) */}
-      <div style={{ marginBottom: '16px' }}>
-        <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#1a1a1a' }}>
-          ঠিকানাঃ <span style={{ color: '#e53e3e' }}>*</span>
+      {/* Address */}
+      <div className="mb-4">
+        <label className="block mb-1.5 text-sm font-medium text-foreground">
+          ঠিকানাঃ <span className="text-[#e53e3e]">*</span>
         </label>
         <Input
           value={formData.union}
           onChange={(e) => onInputChange('union', e.target.value)}
           placeholder="গ্রাম, থানা এবং জেলা"
           required
-          style={{
-            width: '100%',
-            backgroundColor: '#ffffff',
-            border: '1px solid #d0d3dc',
-            borderRadius: '6px',
-            height: '48px',
-            fontSize: '15px',
-            padding: '0 12px',
-            boxShadow: 'none',
-          }}
-          className="focus:ring-0 focus:border-gray-400"
+          className="w-full h-12 px-3 text-[15px] rounded-md border border-border bg-card text-foreground placeholder:text-muted-foreground/60 shadow-none focus:ring-0 focus:border-muted-foreground transition-colors"
         />
       </div>
 
       {/* Phone Number */}
-      <div style={{ marginBottom: '24px' }}>
-        <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#1a1a1a' }}>
-          ফোন নাম্বারঃ <span style={{ color: '#e53e3e' }}>*</span>
+      <div className="mb-6">
+        <label className="block mb-1.5 text-sm font-medium text-foreground">
+          ফোন নাম্বারঃ <span className="text-[#e53e3e]">*</span>
         </label>
         <Input
           value={formData.number}
@@ -122,23 +102,13 @@ export default function ShippingForm({
           placeholder="01XXXXXXXXX"
           pattern="01[3-9]\d{8}"
           required
-          style={{
-            width: '100%',
-            backgroundColor: '#ffffff',
-            border: '1px solid #d0d3dc',
-            borderRadius: '6px',
-            height: '48px',
-            fontSize: '15px',
-            padding: '0 12px',
-            boxShadow: 'none',
-          }}
-          className="focus:ring-0 focus:border-gray-400"
+          className="w-full h-12 px-3 text-[15px] rounded-md border border-border bg-card text-foreground placeholder:text-muted-foreground/60 shadow-none focus:ring-0 focus:border-muted-foreground transition-colors"
         />
       </div>
 
       {/* Order Note */}
-      <div style={{ marginBottom: '24px' }}>
-        <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px', color: '#1a1a1a' }}>
+      <div className="mb-6">
+        <label className="block mb-1.5 text-sm font-medium text-foreground">
           অর্ডার নোট (ঐচ্ছিক)
         </label>
         <Textarea
@@ -146,83 +116,55 @@ export default function ShippingForm({
           onChange={(e) => onInputChange('note', e.target.value)}
           placeholder="বিশেষ কোনো নির্দেশনা থাকলে লিখুন..."
           rows={2}
-          style={{
-            width: '100%',
-            backgroundColor: '#ffffff',
-            border: '1px solid #d0d3dc',
-            borderRadius: '6px',
-            fontSize: '15px',
-            padding: '10px 12px',
-            boxShadow: 'none',
-            resize: 'none',
-          }}
-          className="focus:ring-0 focus:border-gray-400"
+          className="w-full px-3 py-2.5 text-[15px] rounded-md border border-border bg-card text-foreground placeholder:text-muted-foreground/60 shadow-none resize-none focus:ring-0 focus:border-muted-foreground transition-colors"
         />
       </div>
 
       {/* Shipping Zone */}
-      <div style={{ marginBottom: '28px' }}>
-        <h3 style={{ fontSize: '17px', fontWeight: '700', color: '#1a1a1a', marginBottom: '12px' }}>
+      <div className="mb-7">
+        <h3 className="text-[17px] font-bold text-foreground mb-3">
           Shipping
         </h3>
 
-        <div style={{ backgroundColor: '#ffffff', border: '1px solid #d0d3dc', borderRadius: '8px', overflow: 'hidden' }}>
-
+        <div className="bg-card border border-border rounded-lg overflow-hidden transition-colors">
           {/* Outside Dhaka — 90৳ */}
-          <label
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '16px 14px',
-              borderBottom: '1px solid #e5e7eb',
-              cursor: 'pointer',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <label className="flex items-center justify-between p-4 border-b border-border cursor-pointer hover:bg-muted/30 transition-colors">
+            <div className="flex items-center gap-2.5">
               <input
                 type="radio"
                 name="shippingZone"
                 checked={hasSelectedZone && !isInsideDhaka}
                 onChange={selectOutside}
-                style={{ accentColor: '#e53e3e', width: '18px', height: '18px', cursor: 'pointer' }}
+                className="w-4.5 h-4.5 accent-[#e53e3e] cursor-pointer"
               />
-              <span style={{ fontSize: '15px', color: '#1a1a1a' }}>ঢাকার বাহিরে:</span>
+              <span className="text-[15px] text-foreground">ঢাকার বাহিরে:</span>
             </div>
-            <span style={{ fontSize: '15px', color: '#1a1a1a', fontWeight: '500' }}>90 ৳</span>
+            <span className="text-[15px] font-medium text-foreground">90 ৳</span>
           </label>
 
           {/* Inside Dhaka — 70৳ */}
-          <label
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '16px 14px',
-              cursor: 'pointer',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <label className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/30 transition-colors">
+            <div className="flex items-center gap-2.5">
               <input
                 type="radio"
                 name="shippingZone"
                 checked={hasSelectedZone && isInsideDhaka}
                 onChange={selectInside}
-                style={{ accentColor: '#e53e3e', width: '18px', height: '18px', cursor: 'pointer' }}
+                className="w-4.5 h-4.5 accent-[#e53e3e] cursor-pointer"
               />
-              <span style={{ fontSize: '15px', color: '#1a1a1a' }}>ঢাকার ভিতরে:</span>
+              <span className="text-[15px] text-foreground">ঢাকার ভিতরে:</span>
             </div>
-            <span style={{ fontSize: '15px', color: '#1a1a1a', fontWeight: '500' }}>70 ৳</span>
+            <span className="text-[15px] font-medium text-foreground">70 ৳</span>
           </label>
         </div>
 
-        {/* Delivery charge preview — updates live with radio */}
+        {/* Delivery charge preview */}
         {hasSelectedZone && (
-          <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <p style={{ fontSize: '13px', color: '#1a6e30' }}>
+          <div className="mt-2.5 flex justify-between items-center">
+            <p className="text-sm text-[#1a6e30] dark:text-[#4ade80] font-medium">
               ⚡ ১ ঘন্টার মধ্যে ফোনে কনফার্মেশন পাবেন
             </p>
-            <p style={{ fontSize: '13px', fontWeight: '600', color: '#1a1a1a' }}>
+            <p className="text-sm font-semibold text-foreground">
               ডেলিভারি চার্জ: {deliveryCharge} ৳
             </p>
           </div>
@@ -233,19 +175,7 @@ export default function ShippingForm({
       <Button
         onClick={onSubmitOrder}
         disabled={loading || !isFormValid}
-        style={{
-          width: '100%',
-          height: '52px',
-          fontSize: '16px',
-          fontWeight: '700',
-          backgroundColor: '#1a8a3c',
-          color: '#ffffff',
-          border: 'none',
-          borderRadius: '8px',
-          cursor: loading || !isFormValid ? 'not-allowed' : 'pointer',
-          opacity: loading || !isFormValid ? 0.65 : 1,
-          transition: 'opacity 0.2s',
-        }}
+        className="w-full h-13 text-base font-bold text-white bg-[#1a8a3c] dark:bg-[#22c55e] dark:hover:bg-[#16a34a] rounded-lg shadow-sm border-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-65 transition-all flex items-center justify-center"
       >
         {loading ? (
           <>
@@ -261,7 +191,7 @@ export default function ShippingForm({
       </Button>
 
       {/* Payment method note */}
-      <p style={{ textAlign: 'center', marginTop: '12px', fontSize: '13px', color: '#6b7280' }}>
+      <p className="text-center mt-3 text-sm text-muted-foreground">
         💵 ক্যাশ অন ডেলিভারি — পণ্য পেয়ে পেমেন্ট করুন
       </p>
 
