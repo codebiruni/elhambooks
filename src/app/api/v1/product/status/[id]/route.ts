@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import connectDb from "@/lib/connectdb";
 import Product from "@/models/product.model";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 type ParamsType = {
   params: Promise<{
@@ -60,6 +61,8 @@ export async function PATCH(req: NextRequest, context: ParamsType) {
         { status: 404 }
       );
     }
+
+    revalidatePath(`/product/product-details/${id}`);
 
     return NextResponse.json({
       success: true,

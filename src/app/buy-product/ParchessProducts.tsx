@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react'
 import useContextData from "@/defaults/custom-component/useContextData"
 import { toast } from "sonner"
 import { useRouter } from 'next/navigation'
-import OrderSuccessModal from './OrderSuccessModal'
 import EmptyCart from './EmptyCart'
 import OrderSummary from './OrderSummery'
 import ShippingForm from './ShippingForm'
@@ -46,8 +45,7 @@ interface WishlistProduct {
 export default function PurchaseProducts() {
   const { purchasesData, handlePurchasedData, handleAddCart, handleAddWishlist } = useContextData()
   const [loading, setLoading] = useState(false)
-  const [orderSuccess, setOrderSuccess] = useState(false)
-  const [orderId, setOrderId] = useState<string>('')
+  const [isRedirecting, setIsRedirecting] = useState(false)
   const router = useRouter()
   const [formData, setFormData] = useState<OrderFormData>({
     name: '',
@@ -260,7 +258,6 @@ export default function PurchaseProducts() {
       // 1. Fire Browser Pixel with the eventID parameter.
       await trackPurchaseEvent(uniqueEventId)
 
-      // 2. Fire Server-Side Conversions API (CAPI) right alongside it
       try {
         await fetch('/api/v1/meta-capi', {
           method: 'POST',
@@ -279,15 +276,13 @@ export default function PurchaseProducts() {
         });
       } catch (capiError) {
         console.error("Server-side CAPI failed to fire:", capiError);
-        // We catch it silently so it doesn't break the user's successful checkout experience
       }
 
       const orderedProductIds = itemsWithQuantity.map(item => item.id)
-      removeProductsFromStorage(orderedProductIds)
+      const finalOrderId = result.orderId || `ORD-${Date.now()}`
 
-      setOrderSuccess(true)
-      setOrderId(result.orderId || `ORD-${Date.now()}`)
-      toast.success('Order placed successfully!')
+      // 👇 1. Block the UI from switching to EmptyCart
+      setIsRedirecting(true)
 
       handlePurchasedData([])
       setItemsWithQuantity([])
@@ -300,17 +295,19 @@ export default function PurchaseProducts() {
         note: '',
         paymentMethod: 'cash-on-delivery'
       })
-
+      removeProductsFromStorage(orderedProductIds)
+      router.push(`/success/${finalOrderId}`)
     } catch (error) {
       console.error('Order submission error:', error)
       toast.error('Failed to place order. Please try again.')
     } finally {
       setLoading(false)
+      
     }
   }
 
-  if (orderSuccess) {
-    return <OrderSuccessModal orderId={orderId} router={router} />
+  if (isRedirecting) {
+    return null; // Or you could return a simple <div className="p-8 text-center">Redirecting...</div>
   }
 
   if (itemsWithQuantity.length === 0 && cleanPurchasesData.length === 0) {
