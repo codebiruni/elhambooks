@@ -62,19 +62,19 @@ export default function PurchaseProducts() {
   const [itemsWithQuantity, setItemsWithQuantity] = useState<PurchaseItem[]>([])
 
   // Clean purchasesData on every render to remove any functions
-  const cleanPurchasesData = Array.isArray(purchasesData) 
-    ? purchasesData.filter(item => 
-        item && 
-        typeof item === 'object' && 
-        item.id && 
-        typeof item.id === 'string'
-      )
+  const cleanPurchasesData = Array.isArray(purchasesData)
+    ? purchasesData.filter(item =>
+      item &&
+      typeof item === 'object' &&
+      item.id &&
+      typeof item.id === 'string'
+    )
     : []
 
   useEffect(() => {
     console.log('Current purchasesData:', purchasesData)
     console.log('Clean purchasesData:', cleanPurchasesData)
-    
+
     if (cleanPurchasesData.length > 0) {
       const initializedItems = cleanPurchasesData.map((item: any) => ({
         ...item,
@@ -84,13 +84,13 @@ export default function PurchaseProducts() {
     } else {
       setItemsWithQuantity([])
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [purchasesData])
 
-  const subtotal = itemsWithQuantity.reduce((sum: number, item: PurchaseItem) => 
+  const subtotal = itemsWithQuantity.reduce((sum: number, item: PurchaseItem) =>
     sum + (item.price * item.quantity), 0)
-  
-  const deliveryCharge = formData.district ? 
+
+  const deliveryCharge = formData.district ?
     (/dhaka|ঢাকা/i.test(formData.district) ? 70 : 90) : 0
   const discount = 0
   const grandTotal = subtotal + deliveryCharge - discount
@@ -101,32 +101,32 @@ export default function PurchaseProducts() {
 
   const handleQuantityChange = (id: string, newQuantity: number) => {
     if (newQuantity < 1) return
-    
-    setItemsWithQuantity(prev => 
-      prev.map(item => 
+
+    setItemsWithQuantity(prev =>
+      prev.map(item =>
         item.id === id ? { ...item, quantity: newQuantity } : item
       )
     )
   }
 
   const handleRemoveItem = (id: string) => {
-    
+
     // 1. Remove from local state
     const updatedItems = itemsWithQuantity.filter(item => item.id !== id)
     setItemsWithQuantity(updatedItems)
-    
+
     // 2. Remove from global state - SIMPLIFIED
     const updatedPurchases = cleanPurchasesData.filter((item: any) => {
       console.log('Checking item:', item.id, 'against:', id)
       return item.id !== id
     })
-    
+
     console.log('Updated purchases after removal:', updatedPurchases)
     handlePurchasedData(updatedPurchases)
-    
+
     // 3. Remove from storage
     removeProductsFromStorage([id])
-    
+
     console.log('Removal completed')
   }
 
@@ -137,11 +137,11 @@ export default function PurchaseProducts() {
       const cartProducts: CartProduct[] = JSON.parse(cartExisting)
       const now = Date.now()
       const validProducts = cartProducts.filter((item) => item.expiresAt > now)
-      
+
       const updatedCartProducts = validProducts.filter(
         (item) => !productIds.includes(item.product.id)
       )
-      
+
       localStorage.setItem("cartProducts", JSON.stringify(updatedCartProducts))
       handleAddCart(updatedCartProducts)
     }
@@ -152,13 +152,34 @@ export default function PurchaseProducts() {
       const wishlistProducts: WishlistProduct[] = JSON.parse(wishlistExisting)
       const now = Date.now()
       const validProducts = wishlistProducts.filter((item) => item.expiresAt > now)
-      
+
       const updatedWishlistProducts = validProducts.filter(
         (item) => !productIds.includes(item.product.id)
       )
-      
+
       localStorage.setItem("WishlistProducts", JSON.stringify(updatedWishlistProducts))
       handleAddWishlist(updatedWishlistProducts)
+    }
+  }
+
+  const trackPurchaseEvent = async (eventId: string) => {
+    if (typeof window === 'undefined') return;
+
+    for (let attempt = 0; attempt < 20; attempt += 1) {
+      if (typeof window.fbq !== 'undefined') {
+        window.fbq('track', 'Purchase', {
+          value: grandTotal,
+          currency: 'BDT',
+          content_type: 'product',
+          contents: itemsWithQuantity.map(item => ({
+            id: item.id,
+            quantity: item.quantity
+          }))
+        }, { eventID: eventId })
+        return
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 100))
     }
   }
 
@@ -231,18 +252,8 @@ export default function PurchaseProducts() {
       // 👇 GENERATE A UNIQUE DEDUPLICATION KEY
       const uniqueEventId = `pur_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-      // 1. Fire Browser Pixel with the eventID parameter
-      if (typeof window !== 'undefined' && (window as any).fbq) {
-        (window as any).fbq('track', 'Purchase', {
-          value: grandTotal,
-          currency: 'BDT',
-          content_type: 'product',
-          contents: itemsWithQuantity.map(item => ({
-            id: item.id,
-            quantity: item.quantity
-          }))
-        }, { eventID: uniqueEventId }); // 👈 Crucial change
-      }
+      // 1. Fire Browser Pixel with the eventID parameter.
+      await trackPurchaseEvent(uniqueEventId)
 
       // 2. Fire Server-Side Conversions API (CAPI) right alongside it
       try {
@@ -269,11 +280,11 @@ export default function PurchaseProducts() {
 
       const orderedProductIds = itemsWithQuantity.map(item => item.id)
       removeProductsFromStorage(orderedProductIds)
-      
+
       setOrderSuccess(true)
       setOrderId(result.orderId || `ORD-${Date.now()}`)
       toast.success('Order placed successfully!')
-      
+
       handlePurchasedData([])
       setItemsWithQuantity([])
       setFormData({
@@ -285,7 +296,7 @@ export default function PurchaseProducts() {
         note: '',
         paymentMethod: 'cash-on-delivery'
       })
-      
+
     } catch (error) {
       console.error('Order submission error:', error)
       toast.error('Failed to place order. Please try again.')
@@ -305,7 +316,7 @@ export default function PurchaseProducts() {
   return (
     <div className="container mx-auto py-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <OrderSummary 
+        <OrderSummary
           itemsWithQuantity={itemsWithQuantity}
           subtotal={subtotal}
           deliveryCharge={deliveryCharge}
@@ -314,7 +325,7 @@ export default function PurchaseProducts() {
           onQuantityChange={handleQuantityChange}
           onRemoveItem={handleRemoveItem}
         />
-        
+
         <ShippingForm
           formData={formData}
           onInputChange={handleInputChange}
@@ -323,10 +334,10 @@ export default function PurchaseProducts() {
           loading={loading}
           onSubmitOrder={handleSubmitOrder}
           isFormValid={
-            !!formData.name && 
-            !!formData.number && 
-            !!formData.union && 
-            !!formData.district && 
+            !!formData.name &&
+            !!formData.number &&
+            !!formData.union &&
+            !!formData.district &&
             !!formData.upazilla
           }
         />

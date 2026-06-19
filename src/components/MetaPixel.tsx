@@ -1,8 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
 import Script from "next/script";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // 1. Declare the type directly on the window object for this file
 declare global {
@@ -17,12 +18,41 @@ const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 export default function MetaPixel() {
     const pathname = usePathname();
     const searchParams = useSearchParams();
+    const [pixelReady, setPixelReady] = useState(false);
 
-    // Automatically track page views when URLs change
-    useEffect(() => {
+    const trackPageView = () => {
         if (!PIXEL_ID || typeof window.fbq === "undefined") return;
         window.fbq("track", "PageView");
-    }, [pathname, searchParams]);
+    };
+
+    // Track the initial view and later route changes once the pixel bootstrap has run.
+    useEffect(() => {
+        if (pixelReady) return;
+
+        let cancelled = false;
+
+        const waitForPixel = () => {
+            if (cancelled) return;
+
+            if (typeof window.fbq !== "undefined") {
+                setPixelReady(true);
+                return;
+            }
+
+            window.setTimeout(waitForPixel, 100);
+        };
+
+        waitForPixel();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [pixelReady]);
+
+    useEffect(() => {
+        if (!pixelReady) return;
+        trackPageView();
+    }, [pathname, searchParams, pixelReady]);
 
     if (!PIXEL_ID) return null;
 
@@ -31,6 +61,7 @@ export default function MetaPixel() {
             <Script
                 id="fb-pixel"
                 strategy="afterInteractive"
+                onLoad={() => setPixelReady(true)}
                 dangerouslySetInnerHTML={{
                     __html: `
             !function(f,b,e,v,n,t,s)
