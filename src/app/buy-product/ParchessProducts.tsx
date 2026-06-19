@@ -228,19 +228,44 @@ export default function PurchaseProducts() {
 
       const result = await response.json()
 
-      // 👇 ADD META PIXEL PURCHASE EVENT HERE 👇
+      // 👇 GENERATE A UNIQUE DEDUPLICATION KEY
+      const uniqueEventId = `pur_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+      // 1. Fire Browser Pixel with the eventID parameter
       if (typeof window !== 'undefined' && (window as any).fbq) {
         (window as any).fbq('track', 'Purchase', {
-          value: grandTotal,           // Total order value (Subtotal + Shipping)
-          currency: 'BDT',             // Sets currency to Bangladeshi Taka
+          value: grandTotal,
+          currency: 'BDT',
           content_type: 'product',
           contents: itemsWithQuantity.map(item => ({
-            id: item.id,               // Product ID
-            quantity: item.quantity    // Product Quantity
+            id: item.id,
+            quantity: item.quantity
           }))
-        });
+        }, { eventID: uniqueEventId }); // 👈 Crucial change
       }
-      // 👆 END OF META PIXEL CODE 👆
+
+      // 2. Fire Server-Side Conversions API (CAPI) right alongside it
+      try {
+        await fetch('/api/v1/meta-capi', { // We will create this API route in Step 2
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            eventName: 'Purchase',
+            eventId: uniqueEventId,
+            value: grandTotal,
+            currency: 'BDT',
+            products: itemsWithQuantity.map(item => ({ id: item.id, quantity: item.quantity })),
+            // Optional but highly recommended: Send phone/name for better matching
+            userData: {
+              ph: formData.number,
+              fn: formData.name
+            }
+          }),
+        });
+      } catch (capiError) {
+        console.error("Server-side CAPI failed to fire:", capiError);
+        // We catch it silently so it doesn't break the user's successful checkout experience
+      }
 
       const orderedProductIds = itemsWithQuantity.map(item => item.id)
       removeProductsFromStorage(orderedProductIds)
