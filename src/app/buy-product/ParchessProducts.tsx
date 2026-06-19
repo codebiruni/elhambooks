@@ -167,7 +167,7 @@ export default function PurchaseProducts() {
 
     for (let attempt = 0; attempt < 20; attempt += 1) {
       if (typeof window.fbq !== 'undefined') {
-        window.fbq('track', 'Purchase', {
+        const payload = {
           value: grandTotal,
           currency: 'BDT',
           content_type: 'product',
@@ -175,7 +175,9 @@ export default function PurchaseProducts() {
             id: item.id,
             quantity: item.quantity
           }))
-        }, { eventID: eventId })
+        }
+        console.log('🔥 PURCHASE PAYLOAD:', JSON.stringify(payload))
+        window.fbq('track', 'Purchase', payload, { eventID: eventId })
         return
       }
 
