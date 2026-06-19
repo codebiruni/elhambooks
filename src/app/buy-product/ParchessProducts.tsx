@@ -162,14 +162,18 @@ export default function PurchaseProducts() {
     }
   }
 
+  const BDT_TO_USD_RATE = 1 / 122.71 // ≈ 0.008149, update periodically as rates shift
+
   const trackPurchaseEvent = async (eventId: string) => {
     if (typeof window === 'undefined') return;
+
+    const usdValue = Math.round(grandTotal * BDT_TO_USD_RATE * 100) / 100
 
     for (let attempt = 0; attempt < 20; attempt += 1) {
       if (typeof window.fbq !== 'undefined') {
         const payload = {
-          value: grandTotal,
-          currency: 'BDT',
+          value: usdValue,
+          currency: 'USD',
           content_type: 'product',
           contents: itemsWithQuantity.map(item => ({
             id: item.id,
@@ -180,7 +184,6 @@ export default function PurchaseProducts() {
         window.fbq('track', 'Purchase', payload, { eventID: eventId })
         return
       }
-
       await new Promise(resolve => setTimeout(resolve, 100))
     }
   }
@@ -259,16 +262,15 @@ export default function PurchaseProducts() {
 
       // 2. Fire Server-Side Conversions API (CAPI) right alongside it
       try {
-        await fetch('/api/v1/meta-capi', { // We will create this API route in Step 2
+        await fetch('/api/v1/meta-capi', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             eventName: 'Purchase',
             eventId: uniqueEventId,
-            value: grandTotal,
-            currency: 'BDT',
+            value: Math.round(grandTotal * BDT_TO_USD_RATE * 100) / 100,
+            currency: 'USD',
             products: itemsWithQuantity.map(item => ({ id: item.id, quantity: item.quantity })),
-            // Optional but highly recommended: Send phone/name for better matching
             userData: {
               ph: formData.number,
               fn: formData.name
