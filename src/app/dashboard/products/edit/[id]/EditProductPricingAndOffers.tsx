@@ -116,9 +116,10 @@ const EditProductPricingAndOffers = ({
   ]);
 
   // Format date for input field
-  const formatDateForInput = (date: Date | string | undefined) => {
+  const formatDateForInput = (date: string | Date | undefined) => {
     if (!date) return "";
     const dateObj = typeof date === "string" ? new Date(date) : date;
+    if (isNaN(dateObj.getTime())) return ""; // 👈 guards against Invalid Date objects
     return dateObj.toISOString().split("T")[0];
   };
 
